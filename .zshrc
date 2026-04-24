@@ -24,6 +24,7 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='nvim'
 fi
+export VISUAL="$EDITOR"
 
 # История
 HISTSIZE=1000000
@@ -35,7 +36,12 @@ setopt APPEND_HISTORY SHARE_HISTORY
 setopt HIST_IGNORE_DUPS HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE HIST_VERIFY HIST_REDUCE_BLANKS
 setopt EXTENDED_HISTORY HIST_FIND_NO_DUPS HIST_EXPIRE_DUPS_FIRST
-setopt AUTO_CD INTERACTIVE_COMMENTS
+setopt AUTO_CD INTERACTIVE_COMMENTS EXTENDEDGLOB
+setopt PUSHD_IGNORE_DUPS PUSHD_SILENT
+unsetopt beep
+
+# Показывать фактическое время для команд дольше N секунд (как `time`, но автоматически)
+REPORTTIME=10
 
 ### Zinit
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
@@ -93,3 +99,6 @@ alias pulm='java -jar ~/.local/plantuml/plantuml-1.2025.10.jar'
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Машиноспецифичное (не в git): переопределения, секреты, лишний PATH
+[[ -f $HOME/.zshrc.local ]] && source "$HOME/.zshrc.local"
