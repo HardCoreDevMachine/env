@@ -1,7 +1,3 @@
-# Alacritty.exe на Windows + WSL (канон). Копия в %APPDATA%\alacritty\: scripts/install-alacritty-windows.ps1
-# Нативный Linux: alacritty/.config/alacritty/alacritty.toml (отдельно, без wsl).
-# Локальные оверрайды: %APPDATA%\alacritty\local.toml + import ниже.
-
 [general]
 # import = ["%APPDATA%/alacritty/local.toml"]
 import = []
