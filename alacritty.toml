@@ -28,7 +28,8 @@ cyan    = "0x9ad2e2"
 white   = "0xfafcff"
 
 [env]
-TERM = "xterm-256color"
+TERM = "alacritty"
+#TERM = "xterm-256color"
 COLORTERM = "truecolor"
 LANG = "en_US.UTF-8"
 # Starship / иконки в WSL — как в Windows Terminal
@@ -65,10 +66,12 @@ startup_mode = "Maximized"
 # Login-shell как в WT: profile.d, locale, PATH
 program = "wsl"
 args = [
-    # "-d", "Ubuntu-24.04",
     "--cd",
     "~",
     "-e",
+    "env",
+    "TERM=alacritty",
+    "COLORTERM=truecolor",
     "zsh",
     "-l",
 ]
