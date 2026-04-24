@@ -1,0 +1,156 @@
+# Alacritty.exe на Windows + WSL (канон). Копия в %APPDATA%\alacritty\: scripts/install-alacritty-windows.ps1
+# Нативный Linux: alacritty/.config/alacritty/alacritty.toml (отдельно, без wsl).
+# Локальные оверрайды: %APPDATA%\alacritty\local.toml + import ниже.
+
+[general]
+# import = ["%APPDATA%/alacritty/local.toml"]
+import = []
+
+# Тёмная схема в духе Nord (холодные серо‑синие, без черноты)
+[colors.primary]
+background = "0x2e3440"   # nord0
+foreground = "0xe5e9f0"   # светлый текст
+
+[colors.normal]
+black   = "0x3b4252"      # nord1
+red     = "0xbf616a"      # nord11
+green   = "0xa3be8c"      # nord14
+yellow  = "0xebcb8b"      # nord13
+blue    = "0x81a1c1"      # nord9
+magenta = "0xb48ead"      # nord15
+cyan    = "0x88c0d0"      # nord8
+white   = "0xe5e9f0"      # nord4
+
+[colors.bright]
+black   = "0x4c566a"      # nord3
+red     = "0xd57780"
+green   = "0xb4d196"
+yellow  = "0xf0d399"
+blue    = "0x8fb3d9"
+magenta = "0xc8a5d4"
+cyan    = "0x9ad2e2"
+white   = "0xfafcff"
+
+[env]
+TERM = "xterm-256color"
+COLORTERM = "truecolor"
+LANG = "en_US.UTF-8"
+# Starship / иконки в WSL — как в Windows Terminal
+LC_ALL = "en_US.UTF-8"
+LC_CTYPE = "en_US.UTF-8"
+
+[font]
+size = 11
+
+[font.normal]
+family = "Hack Nerd Font"
+style = "Regular"
+
+[font.bold]
+family = "Hack Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "Hack Nerd Font"
+style = "Italic"
+
+[font.bold_italic]
+family = "Hack Nerd Font"
+style = "Bold Italic"
+
+[window]
+decorations = "None"
+dynamic_padding = true
+opacity = 0.9
+startup_mode = "Maximized"
+#padding = { x = 15, y = 15 }
+
+[terminal.shell]
+# Login-shell как в WT: profile.d, locale, PATH
+program = "wsl"
+args = [
+    # "-d", "Ubuntu-24.04",
+    "--cd",
+    "~",
+    "-e",
+    "zsh",
+    "-l",
+]
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 500
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[mouse]
+hide_when_typing = true
+
+[selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+
+# Zoom + vi-mode в Alacritty
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Control"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Control"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "Space"
+mods = "Control|Shift"
+action = "ToggleViMode"
+
+# Удобства под Windows (из alacritty-windows)
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "N"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u0015"
+key = "Back"
+mods = "Super"
+
+[[keyboard.bindings]]
+chars = "\u001Bb"
+key = "Left"
+mods = "Alt"
+
+[[keyboard.bindings]]
+chars = "\u001Bf"
+key = "Right"
+mods = "Alt"
+
+[[keyboard.bindings]]
+chars = "\u0000"
+key = "Space"
+mods = "Control"
+
+[[keyboard.bindings]]
+chars = "\u001BOH"
+key = "Left"
+mode = "AppCursor"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001BOF"
+key = "Right"
+mode = "AppCursor"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001BR"
+key = "R"
+mods = "Command"
