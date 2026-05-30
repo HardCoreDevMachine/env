@@ -220,7 +220,7 @@ return {
       { "<leader>tt", "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
     },
     opts = {
-      open_mapping = [[<C-\>]],
+      -- <C-\> reserved for vim-tmux-navigator (previous pane)
       direction = "float",
       float_opts = { border = "rounded" },
     },
