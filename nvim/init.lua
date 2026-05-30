@@ -54,6 +54,10 @@ opt.guicursor = table.concat({
 
 -- Gulp: gulpfile.* = JS/TS, чтобы подхватывал tsserver
 vim.filetype.add({
+  extension = {
+    ["http"] = "http",
+    ["rest"] = "rest",
+  },
   filename = {
     ["gulpfile.js"] = "javascript",
     ["gulpfile.cjs"] = "javascript",
