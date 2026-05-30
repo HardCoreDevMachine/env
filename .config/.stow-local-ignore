@@ -1,0 +1,32 @@
+# Локальный ignore-лист для пакета .config (GNU Stow).
+# При наличии этого файла встроенный список stow не используется — дублируем его здесь.
+
+# VCS и метаданные
+RCS
+.+,v
+CVS
+\.\#.+
+\.cvsignore
+\.svn
+_darcs
+\.hg
+\.git
+\.gitignore
+\.gitmodules
+
+# Резервные копии редакторов
+.+~
+\#.*\#
+
+# Документация пакета (не нужна в ~/.config)
+^/README.*
+^/LICENSE.*
+^/COPYING
+
+# Python (ranger/commands.py)
+^/ranger/__pycache__
+__pycache__
+\.pyc$
+
+# macOS
+\.DS_Store
