@@ -1,105 +1,77 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
--- Общие опции
 local opt = vim.opt
-
--- Включаем мышь во всех режимах
-opt.mouse = "a"
-
--- Нормальные номера строк
 opt.number = true
 opt.relativenumber = true
-opt.wrap = false
-
--- Копипаста через системный буфер
+opt.mouse = "a"
 opt.clipboard = "unnamedplus"
-
--- Отступы
+opt.wrap = false
 opt.expandtab = true
 opt.shiftwidth = 2
 opt.tabstop = 2
 opt.smartindent = true
-
--- Поиск
 opt.ignorecase = true
 opt.smartcase = true
-opt.incsearch = true
-opt.hlsearch = true
-
--- Окна
 opt.splitbelow = true
 opt.splitright = true
-
--- Всякий мусор
-opt.swapfile = false
-opt.backup = false
 opt.undofile = true
+opt.swapfile = false
+opt.signcolumn = "auto:1-2"
+opt.scrolloff = 5
+opt.updatetime = 300
+opt.timeoutlen = 1500
+opt.ttimeoutlen = 50
+-- Match Solarized Dark in the terminal, with distinct syntax colors.
+opt.termguicolors = true
+opt.background = "dark"
+vim.cmd.colorscheme("solarized")
+opt.laststatus = 3
+opt.statusline = " %f %m%r%=%y  %l:%c  %p%% "
 
--- auto-session: сохранять/восстанавливать локальные опции окон
-opt.sessionoptions:append("localoptions")
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
+vim.g.netrw_winsize = -28
+vim.g.netrw_altv = 0
+vim.g.netrw_browse_split = 0
 
--- Более удобный курсор:
--- - блочный в normal
--- - вертикальная палка в insert
--- - горизонтальная в replace
-opt.guicursor = table.concat({
-  "n-v-c:block",
-  "i-ci-ve:ver25",
-  "r-cr:hor20",
-  "o:hor50",
-}, ",")
-
--- Подсветка текущей строки и номера строки
--- opt.cursorline = true
--- opt.cursorlineopt = "number,line"
-
--- Gulp: gulpfile.* = JS/TS, чтобы подхватывал tsserver
-vim.filetype.add({
-  extension = {
-    ["http"] = "http",
-    ["rest"] = "rest",
-  },
-  filename = {
-    ["gulpfile.js"] = "javascript",
-    ["gulpfile.cjs"] = "javascript",
-    ["gulpfile.mjs"] = "javascript",
-    ["gulpfile.ts"] = "typescript",
-    ["gulpfile.mts"] = "typescript",
-  },
-})
-
--- Диагностика в стиле VS Code: float с полным текстом при наведении на строку с ошибкой
+-- Diagnostics stay quiet until requested with <space>d or [d / ]d.
 vim.diagnostic.config({
-  underline = true,
+  virtual_text = false,
   signs = true,
-  virtual_text = {
-    prefix = "●",
-    format = function(d)
-      return " " .. (d.message:gsub("\n", " "):gsub("%s+", " "):sub(1, 60))
-    end,
-  },
-  float = {
-    border = "rounded",
-    source = "always",
-    format = function(d)
-      return string.format("%s [%s]\n%s", d.source or "LSP", d.code or d.severity, d.message)
-    end,
-  },
+  underline = true,
+  update_in_insert = false,
   severity_sort = true,
+  float = { border = "rounded", source = true },
 })
 
--- Быстрее показ float при "наведении" (CursorHold срабатывает через updatetime)
-vim.opt.updatetime = 300
+local map = vim.keymap.set
+local function open_explorer()
+  vim.cmd("Lexplore! " .. vim.fn.fnameescape(require("config.project").root()))
+end
+local run = require("config.run")
 
--- При задержке на строке с ошибкой — показать float с полным сообщением (как hover в VS Code)
-vim.api.nvim_create_autocmd("CursorHold", {
-  callback = function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
-    local diags = vim.diagnostic.get(bufnr, { lnum = lnum })
-    if #diags > 0 then
-      vim.diagnostic.open_float(bufnr, { scope = "line", focusable = false })
-    end
-  end,
-})
+map("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
+map("n", "<leader>d", vim.diagnostic.open_float, { desc = "Diagnostic under cursor" })
+map("n", "<leader>e", open_explorer, { desc = "Explorer right" })
+map("n", "<leader>cL", function() require("config.info").lsp() end, { desc = "Show buffer LSP clients" })
+map("n", "<leader>cF", function() require("config.info").formatters() end, { desc = "Show buffer formatters" })
+map("n", "<leader>tt", "<cmd>botright 12split | terminal<cr>", { desc = "Terminal" })
+map("n", "<leader>rr", run.command("cargo run"), { desc = "Rust cargo run" })
+map("n", "<leader>rc", run.command("cargo check"), { desc = "Rust cargo check" })
+map("n", "<leader>rb", run.command("cargo build"), { desc = "Rust cargo build" })
+map("n", "<leader>rl", run.command("cargo clippy"), { desc = "Rust cargo clippy" })
+map("n", "<leader>rt", run.command("cargo test"), { desc = "Rust cargo test" })
+map("n", "<leader>Gp", run.go_test_package, { desc = "Go test current package" })
+map("n", "<leader>Gt", run.command("go test ./..."), { desc = "Go test all packages" })
+map("n", "<leader>Gb", run.command("go build ./..."), { desc = "Go build all packages" })
+map("n", "<leader>Gv", run.command("go vet ./..."), { desc = "Go vet all packages" })
+map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Leave terminal mode" })
 
 require("config.lazy")
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("UserTestMarks", { clear = true }),
+  pattern = { "go", "javascript", "javascriptreact", "typescript", "typescriptreact", "svelte", "php", "lua", "python", "rust" },
+  callback = function(event) require("config.test_marks").attach(event.buf) end,
+})
