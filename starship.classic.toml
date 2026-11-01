@@ -1,0 +1,53 @@
+# ~/.config/starship.toml
+
+# Не вставлять пустую строку перед промптом
+add_newline = false
+
+# Сам промпт: разобьем на две строки для удобства
+format = """
+[╭─](bold white)$all
+[╰─](bold green)$character"""
+
+# Символ приглашения (зеленый для успеха, красный для ошибки)
+[character]
+success_symbol = "[➜](bold green)"
+error_symbol = "[➜](bold red)"
+
+# Информация о директории
+[directory]
+style = "bold cyan"
+truncation_length = 3          # Показывать только 3 последние папки
+truncate_to_repo = true        # В Git-репе показывать путь от корня репы
+
+# Информация о Git (будет видна только в репозиториях)
+[git_branch]
+symbol = "🌱 "
+style = "bold purple"
+
+[git_status]
+style = "bold red"
+# Можно настроить символы для разных состояний (опционально)
+# conflicted = "🏳"
+# ahead = "⇡${count}"
+# behind = "⇣${count}"
+# diverged = "⇕"
+
+# Информация о версиях языков (показывать только при наличии конкретного файла)
+[nodejs]
+symbol = "⬢ "
+style = "bold green"
+
+[rust]
+symbol = "🦀 "
+style = "bold red"
+
+[python]
+symbol = "🐍 "
+style = "bold yellow"
+
+# Время (опционально, можно отключить если не нужно)
+[time]
+disabled = false
+format = '🕙 $time'
+style = "dimmed white"
+time_format = "%H:%M"

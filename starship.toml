@@ -4,11 +4,12 @@
 add_newline = false
 
 # Сам промпт: разобьем на две строки для удобства
+# Именованные ANSI-цвета берутся из активной палитры Alacritty (Inferno).
 format = """
 [╭─](bold white)$all
 [╰─](bold green)$character"""
 
-# Символ приглашения (зеленый для успеха, красный для ошибки)
+# Символ приглашения (зелёный для успеха, красный для ошибки)
 [character]
 success_symbol = "[➜](bold green)"
 error_symbol = "[➜](bold red)"

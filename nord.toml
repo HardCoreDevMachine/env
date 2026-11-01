@@ -1,0 +1,24 @@
+# Тёмная схема в духе Nord (холодные серо‑синие, без черноты)
+[colors.primary]
+background = "0x2e3440"   # nord0
+foreground = "0xe5e9f0"   # светлый текст
+
+[colors.normal]
+black   = "0x3b4252"      # nord1
+red     = "0xbf616a"      # nord11
+green   = "0xa3be8c"      # nord14
+yellow  = "0xebcb8b"      # nord13
+blue    = "0x81a1c1"      # nord9
+magenta = "0xb48ead"      # nord15
+cyan    = "0x88c0d0"      # nord8
+white   = "0xe5e9f0"      # nord4
+
+[colors.bright]
+black   = "0x4c566a"      # nord3
+red     = "0xd57780"
+green   = "0xb4d196"
+yellow  = "0xf0d399"
+blue    = "0x8fb3d9"
+magenta = "0xc8a5d4"
+cyan    = "0x9ad2e2"
+white   = "0xfafcff"
