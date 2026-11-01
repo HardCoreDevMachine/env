@@ -221,6 +221,18 @@ Go, Rust/rustup с rustfmt, Node/npm, PHP/Composer, Lua/Busted, Python/uv
 :TSInstallConfigured
 ```
 
+Для JS/TS и Svelte вместо двух отдельных шагов достаточно выполнить:
+
+```vim
+:FrontendSetup
+```
+
+Команда ставит парсеры подсветки для JS/TS/TSX/Svelte и серверы
+`typescript-language-server`, `svelte-language-server` и Prettier. После её
+завершения закрой и снова открой фронтенд-файл (или перезапусти Neovim).
+Проверить подключение к открытому файлу можно через `Пробел cL`: должны быть
+видны `ts_ls` для JS/TS и `svelte` для `.svelte`.
+
 На текущей машине Psalm пока не установлен, остальные серверы уже установлены.
 На текущей машине tree-sitter-cli 0.27.0 установлен в `~/.local/bin`.
 Обновления запускаются вручную: `:Lazy` для плагинов, `:TSUpdate` для парсеров

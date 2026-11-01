@@ -68,9 +68,18 @@ return {
     config = function(_, opts)
       require("nvim-treesitter").setup({ install_dir = opts.install_dir })
 
+      -- JS/TS and Svelte do not have a built-in parser. Keep their setup one
+      -- command away, so a fresh Neovim installation is usable immediately.
+      local frontend_parsers = { "javascript", "typescript", "tsx", "svelte", "html", "css", "json" }
+
       vim.api.nvim_create_user_command("TSInstallConfigured", function()
         require("nvim-treesitter").install(opts.parsers)
       end, { desc = "Install configured Treesitter parsers" })
+
+      vim.api.nvim_create_user_command("FrontendSetup", function()
+        require("nvim-treesitter").install(frontend_parsers, { summary = true })
+        vim.cmd("MasonInstall typescript-language-server svelte-language-server prettier")
+      end, { desc = "Install JS/TS/Svelte support" })
 
       vim.api.nvim_create_autocmd("FileType", {
         group = vim.api.nvim_create_augroup("UserTreesitter", { clear = true }),

@@ -1,6 +1,20 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+-- nvim-treesitter main uses vim.list.unique (added in Neovim 0.12). Keep this
+-- configuration usable with the installed 0.11.x release as well.
+vim.list = vim.list or {}
+vim.list.unique = vim.list.unique or function(items)
+  local seen, result = {}, {}
+  for _, item in ipairs(items) do
+    if not seen[item] then
+      seen[item] = true
+      result[#result + 1] = item
+    end
+  end
+  return result
+end
+
 local opt = vim.opt
 opt.number = true
 opt.relativenumber = true
