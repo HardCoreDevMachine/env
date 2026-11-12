@@ -1,0 +1,10 @@
+# OMP runtime state is never stored here.
+*.db
+*.db-*
+cache/
+sessions/
+blobs/
+terminal-sessions/
+
+# Provider endpoints and enabled-server selection stay local.
+agent/mcp.json

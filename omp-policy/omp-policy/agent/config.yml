@@ -1,0 +1,79 @@
+setupVersion: 3
+modelRoles:
+  default: openai/gpt-5.6-terra:xhigh
+  smol: openai/gpt-5.6-luna:low
+  slow: openai/gpt-5.6-terra:xhigh
+  plan: openai/gpt-5.6-terra:xhigh
+  task: "@implementer"
+  advisor: "@slow"
+  memory: "@smol"
+  architect: "@slow"
+  implementer: "@default"
+  review: "@slow"
+  security: "@slow"
+enabledModels:
+  - openai/gpt-5.6-terra
+  - openai/gpt-5.6-luna
+dev:
+  autoqaConsent: denied
+symbolPreset: nerd
+composer:
+  shape: band
+theme:
+  light: catppuccin-latte
+  dark: catppuccin-latte
+statusLine:
+  separator: pipe
+tui:
+  vimMode: true
+memory:
+  backend: mnemopi
+mnemopi:
+  autoRetain: false
+  scoping: per-project-tagged
+  enhancedRecall: true
+task:
+  agentModelOverrides:
+    scout: "@smol"
+    architect: "@architect"
+    implementer: "@implementer"
+    reviewer: "@review"
+    security-reviewer: "@security"
+    task: "@implementer"
+    sonic: "@smol"
+  agentIdleTtlMs: 900000
+  agentSoftRequestBudget:
+    scout: 30
+    architect: 40
+    implementer: 80
+    reviewer: 40
+    security-reviewer: 50
+  enableEffort: true
+  enableLsp: true
+  isolation:
+    enabled: true
+    apply: false
+  maxConcurrency: 4
+  maxRuntimeMs: 2700000
+  showResolvedModelBadge: true
+  softRequestBudget: 60
+  structured: true
+update:
+  auto: false
+ask:
+  timeout: 30
+
+
+skills:
+  ignoredSkills:
+    - computer-use
+    - jira-tickets
+    - linear-tickets
+    - orca-cli
+    - orca-emulator
+    - orca-emulator-android
+    - orca-jira
+    - orca-linear
+    - orca-per-workspace-env
+    - orca-plugin-authoring
+    - orchestration
