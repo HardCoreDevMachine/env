@@ -15,5 +15,5 @@ require("lazy").setup({
   defaults = { lazy = true },
   checker = { enabled = false },
   change_detection = { enabled = false },
-  install = { colorscheme = { "solarized", "default" } },
+  install = { colorscheme = { "catppuccin", "default" } },
 })

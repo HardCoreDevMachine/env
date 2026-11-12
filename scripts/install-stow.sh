@@ -9,5 +9,4 @@ if ! command -v stow >/dev/null 2>&1; then
   exit 1
 fi
 
-stow -t "${HOME}/.config" config
-exec stow -t "${HOME}" zsh tmux alacritty
+exec stow -t "${HOME}/.config" config

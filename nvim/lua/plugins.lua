@@ -14,6 +14,16 @@ end
 
 return {
   {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
+    priority = 1000,
+    opts = {
+      flavour = "latte",
+      term_colors = true,
+    },
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     lazy = false,
@@ -68,18 +78,9 @@ return {
     config = function(_, opts)
       require("nvim-treesitter").setup({ install_dir = opts.install_dir })
 
-      -- JS/TS and Svelte do not have a built-in parser. Keep their setup one
-      -- command away, so a fresh Neovim installation is usable immediately.
-      local frontend_parsers = { "javascript", "typescript", "tsx", "svelte", "html", "css", "json" }
-
       vim.api.nvim_create_user_command("TSInstallConfigured", function()
         require("nvim-treesitter").install(opts.parsers)
       end, { desc = "Install configured Treesitter parsers" })
-
-      vim.api.nvim_create_user_command("FrontendSetup", function()
-        require("nvim-treesitter").install(frontend_parsers, { summary = true })
-        vim.cmd("MasonInstall typescript-language-server svelte-language-server prettier")
-      end, { desc = "Install JS/TS/Svelte support" })
 
       vim.api.nvim_create_autocmd("FileType", {
         group = vim.api.nvim_create_augroup("UserTreesitter", { clear = true }),
@@ -135,8 +136,19 @@ return {
     },
   },
   {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
+    keys = {
+      { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Open Git diff" },
+      { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "Git file history" },
+      { "<leader>gH", "<cmd>DiffviewFileHistory<cr>", desc = "Git project history" },
+      { "<leader>gq", "<cmd>DiffviewClose<cr>", desc = "Close Git diff" },
+    },
+    opts = { use_icons = false },
+  },
+  {
     "stevearc/conform.nvim",
-    ft = { "javascript", "javascriptreact", "typescript", "typescriptreact", "svelte", "html", "css", "scss", "json", "jsonc", "yaml", "markdown" },
+    ft = { "javascript", "javascriptreact", "typescript", "typescriptreact", "svelte", "html", "css", "scss", "json", "jsonc", "yaml", "markdown", "python" },
     opts = function()
       local util = require("conform.util")
       return {
@@ -144,6 +156,18 @@ return {
           prettier = {
             cwd = util.root_file({ "package.json", ".prettierrc", "prettier.config.js", "prettier.config.mjs", "prettier.config.cjs" }),
             require_cwd = true,
+          },
+          ruff_fix = {
+            command = "uv",
+            prepend_args = { "tool", "run", "ruff" },
+          },
+          ruff_format = {
+            command = "uv",
+            prepend_args = { "tool", "run", "ruff" },
+          },
+          ruff_organize_imports = {
+            command = "uv",
+            prepend_args = { "tool", "run", "ruff" },
           },
         },
         formatters_by_ft = {
@@ -159,6 +183,7 @@ return {
           jsonc = { "prettier" },
           yaml = { "prettier" },
           markdown = { "prettier" },
+          python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
         },
         format_on_save = function(bufnr)
           local enabled = {
@@ -172,6 +197,7 @@ return {
             scss = true,
             json = true,
             jsonc = true,
+            python = true,
           }
           if not enabled[vim.bo[bufnr].filetype] then return end
           return { timeout_ms = 2000, lsp_format = "never" }
@@ -199,6 +225,20 @@ return {
       files = { rg_opts = "--files --hidden --glob !.git" },
       grep = { rg_opts = "--column --line-number --no-heading --color=always --smart-case --hidden --glob !.git -e" },
     },
+  },
+  {
+    "kristijanhusak/vim-dadbod-ui",
+    cmd = { "DB", "DBUI", "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
+    keys = {
+      { "<leader>db", "<cmd>DBUIToggle<cr>", desc = "Database UI" },
+    },
+    dependencies = {
+      { "tpope/vim-dadbod", lazy = true },
+      { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
+    },
+    init = function()
+      vim.g.db_ui_use_nerd_fonts = 0
+    end,
   },
   {
     "folke/flash.nvim",
@@ -367,5 +407,32 @@ return {
       vim.g["test#python#runner"] = "pytest"
       vim.g["test#javascript#nodetest#options"] = { suite = "--test" }
     end,
+  },
+  {
+    "powerman/ruscmd.nvim",
+    version = "v0.2.0",
+    lazy = false,
+    opts = {
+      cabbrev = {
+        "e",
+        "Explore",
+        "Lexplore",
+        "Lazy",
+        "Mason",
+        "DBUI",
+        "FzfLua",
+        "TSInstallConfigured",
+        "DiffviewOpen",
+        "DiffviewFileHistory",
+        "DiffviewClose",
+        "Refactor",
+        "ConformInfo",
+      },
+    },
+  },
+  {
+    "rauls-kjarners/omp.nvim",
+    event = "VeryLazy",
+    config = function() require("omp").setup() end,
   },
 }

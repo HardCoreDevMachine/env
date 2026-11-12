@@ -2,10 +2,10 @@
 
 Минимальный конфиг для Neovim 0.12.5+: Go, Rust, JavaScript/TypeScript,
 Svelte/Vite, PHP, Lua и Python.
-Рабочий `~/.config/nvim` ссылается на эту папку. Локальная тема `solarized`
-использует цвета Solarized Dark из профиля Ubuntu Windows Terminal. Фон и основной
-текст совпадают с терминалом, а цвета синтаксиса заданы явно через `termguicolors`.
-Дополнительный плагин темы не нужен.
+Рабочий `~/.config/nvim` ссылается на эту папку. Catppuccin Latte — светлая
+тема Neovim; плагин задаёт и цвета встроенных терминалов через `termguicolors`.
+Тема используется из `catppuccin/nvim` и устанавливается вместе с остальными
+плагинами.
 
 Языковой сервер — отдельная программа, которая даёт подсказки, находит определения
 и ошибки в коде. Он запускается только при открытии файла нужного языка.
@@ -18,7 +18,7 @@ Svelte/Vite, PHP, Lua и Python.
 | Svelte/Vite | svelte-language-server; HTML/CSS/JSON/Tailwind/Emmet по файлам | Vitest, Playwright и другие |
 | PHP | Intelephense; Psalm в проектах с psalm.xml | PHPUnit или Pest из проекта |
 | Lua | lua-language-server | Busted |
-| Python | ty | pytest; для проекта с uv.lock — uv run pytest |
+| Python | ty и Ruff | pytest; для проекта с uv.lock — uv run pytest |
 
 ## Каждый день
 
@@ -28,6 +28,7 @@ Svelte/Vite, PHP, Lua и Python.
 | Клавиши | Действие |
 | --- | --- |
 | `Пробел ff` | Найти файл в проекте |
+| `Пробел db` | Открыть интерфейс SQLite и других баз данных |
 | `Пробел e` | Открыть или закрыть explorer справа |
 | `Пробел fg` | Найти текст в проекте |
 | `Пробел fw` | Найти слово под курсором |
@@ -47,8 +48,6 @@ Svelte/Vite, PHP, Lua и Python.
 | `Пробел cf` | Форматировать через сервер, если он умеет |
 | `Пробел rr`, `rc`, `rb`, `rl`, `rt` | Rust: cargo run/check/build/clippy/test |
 | `Пробел Gp`, `Gt`, `Gb`, `Gv` | Go: test package, test all, build all, vet all |
-| `[h`, `]h` | Предыдущее/следующее git-изменение |
-| `Пробел gp`, `Пробел gs`, `Пробел gr`, `Пробел gb` | Git hunk: показать, stage, откатить, blame строки |
 | `Пробел tn` | Тест под курсором |
 | `[t`, `]t` | Предыдущее/следующее начало теста или Go-бенчмарка |
 | `Пробел tf` | Тесты текущего файла |
@@ -80,6 +79,85 @@ Svelte/Vite, PHP, Lua и Python.
 Обычные команды остаются обычными: `/`, `f`, `t`, `%`, `gcc`, `gc`,
 `Ctrl-w h/j/k/l`, `:e`, `:w`, `:q`, `:Explore`, `:Lexplore`.
 Самодельных команд нет.
+
+## Русская раскладка
+
+`ruscmd.nvim` позволяет не переключать раскладку для команд Neovim. В Normal
+mode русские клавиши ЙЦУКЕН выполняют соответствующие Vim-команды. В
+command-line mode работают часто используемые команды: `:й` (`:q`), `:ц`
+(`:w`), `:цй` (`:wq`), `:цйф` (`:wqa`), `:ив` (`:bd`) и `:ит` (`:bn`).
+Также добавлены сокращения для основных команд этого конфига, включая `:e`,
+`:Explore`, `:Lexplore`, `:Lazy`, `:Mason`, `:DBUI` и `:FzfLua`.
+
+Сокращения в command-line mode срабатывают для команд без аргументов; для
+ввода путей и других аргументов переключи раскладку перед вводом строки.
+
+## Git
+
+### Глоссарий
+
+- **Репозиторий** — папка проекта, где уже выполнена команда `git init` или
+  скачан проект с Git. Все команды этой секции работают только в нём.
+- **Изменение** — строки, которые отличаются от последнего сохранённого в Git
+  состояния. Gitsigns отмечает их слева от номера строки.
+- **Hunk** — один непрерывный кусок изменённых строк. Это не обязательно весь
+  файл: один файл может содержать несколько hunk.
+- **Stage** — список изменений, которые попадут в следующий **commit**. Commit —
+  сохранённая точка в истории Git с сообщением. Добавить hunk в stage не значит
+  уже создать commit.
+- **Diff** — сравнение двух состояний файла строка за строкой.
+- **История файла** — список commit, которые меняли этот файл. Это не то же
+  самое, что текущий diff: история показывает уже сохранённые изменения.
+
+### Быстро в текущем файле: Gitsigns
+
+| Клавиши | Действие |
+| --- | --- |
+| `[h`, `]h` | Перейти к предыдущему или следующему hunk |
+| `Пробел gp` | Показать hunk под курсором |
+| `Пробел gs` | Добавить hunk под курсором в stage |
+| `Пробел gr` | Откатить hunk под курсором в файле |
+| `Пробел gb` | Показать автора и commit для строки под курсором |
+
+`Пробел gr` меняет файл, поэтому используй его только когда этот кусок точно
+не нужен. Постоянный blame выключен: автор строки показывается лишь по запросу
+через `Пробел gb`.
+
+### Посмотреть перед commit: Diffview
+
+Diffview открывает список изменённых файлов и их diff в отдельных окнах.
+
+| Клавиши | Действие |
+| --- | --- |
+| `Пробел gd` | Открыть diff всех текущих изменений проекта |
+| `Пробел gh` | Открыть историю текущего файла |
+| `Пробел gH` | Открыть историю всего проекта |
+| `Пробел gq` | Закрыть Diffview |
+
+Внутри Diffview `Tab` и `Shift-Tab` переключают изменённые файлы. При merge или
+rebase он также может открыть инструмент для разрешения конфликтов; подробные
+команды находятся в `:help diffview`.
+
+### Операции над репозиторием: Lazygit
+
+`Пробел gg` открывает Lazygit в отдельной вкладке Neovim и сразу переходит в
+корень текущего проекта. Это основной экран, когда нужно увидеть статус многих
+файлов, сделать commit, переключить ветку, убрать изменения в stash, выполнить
+rebase или отправить изменения на сервер. Подсказки клавиш Lazygit показывает
+внизу собственного окна; `q` завершает его, а `:tabclose` закрывает вкладку
+Neovim, если она осталась пустой.
+
+Выбор инструмента простой:
+
+- меняешь несколько строк в открытом файле — Gitsigns;
+- проверяешь большой набор изменений или историю — Diffview;
+- работаешь с ветками, commit, stash, rebase или push — Lazygit.
+
+## SQLite и другие базы
+
+Нажми `Пробел db` или выполни `:DBUI`. В панели нажми `A` и укажи URL,
+например `sqlite:./data/app.db`. Запрос открывается из панели, а запись
+файла (`:w`) выполняет его. Для SQLite нужен `sqlite3` в `PATH`.
 
 Rust/Go команды сохраняют текущий файл и открывают нижний терминал в корне
 проекта. `Пробел Gp` запускает `go test` только для пакета текущего файла,
@@ -157,12 +235,12 @@ PHP обычно достаточно включить Xdebug в PHP. Для Doc
 
 ## Что оставлено
 
-Всего 17 плагинов с менеджером: lazy.nvim, fzf-lua, flash.nvim, nvim-autopairs,
-refactoring.nvim, async.nvim, blink.cmp,
-mason.nvim, nvim-lspconfig, conform.nvim, nvim-treesitter,
-nvim-treesitter-textobjects, gitsigns.nvim, nvim-dap, nvim-dap-ui, nvim-nio,
-vim-test.
-При пустом запуске загружаются lazy.nvim и nvim-treesitter.
+Всего 24 плагина с менеджером: Catppuccin, lazy.nvim, fzf-lua, flash.nvim,
+nvim-autopairs, refactoring.nvim, async.nvim, blink.cmp, mason.nvim,
+nvim-lspconfig, conform.nvim, nvim-treesitter, nvim-treesitter-textobjects,
+gitsigns.nvim, nvim-dap, nvim-dap-ui, nvim-nio, vim-test, vim-dadbod,
+vim-dadbod-ui, vim-dadbod-completion, diffview.nvim, ruscmd.nvim и omp.nvim.
+При пустом запуске загружаются Catppuccin, lazy.nvim и nvim-treesitter.
 Поиск и тесты загружаются по нажатию, серверы — по языку файла.
 Автодополнение работает на Lua без скачивания или компиляции отдельной библиотеки.
 Фронтовые файлы форматируются через Prettier внутри Node-проекта; для `.svelte`
@@ -174,10 +252,14 @@ vim-test.
 Treesitter уточняет подсветку и даёт переходы по функциям/типам для языков проекта.
 Парсеры ставятся в `~/.local/share/nvim/site`, а Gitsigns показывает изменения
 только в git-репозиториях.
+Lazygit открывается в отдельной вкладке из корня текущего проекта. Diffview
+показывает diff, историю файлов и помогает при конфликтах.
 Ошибки подчёркиваются; всплывающее объяснение появляется по запросу.
-Go и Rust форматируются автоматически при сохранении и вручную через `Пробел cf`.
-У ty нет форматирования; для Python при необходимости можно запускать
-`ruff format` из терминала проекта.
+Go, Rust и Python форматируются автоматически при сохранении и вручную через
+`Пробел cf`. Для Python `ty` отвечает за типы, а Ruff — за lint, автоисправления,
+форматирование и сортировку imports. Оба LSP и команды Ruff запускаются через
+`uv tool run`, поэтому глобально ставить `ty` и `ruff` не нужно. `uv` кеширует
+инструменты; конфигурация Ruff берётся из корня открытого проекта.
 
 Go проверяет диагностику при сохранении. gopls использует безопасный набор
 анализаторов, включая nilness, unused params, unused writes и useany.
@@ -206,7 +288,7 @@ Go, Rust/rustup с rustfmt, Node/npm, PHP/Composer, Lua/Busted, Python/uv
 Один раз установи серверы стандартной командой Mason:
 
 ```vim
-:MasonInstall gopls rust-analyzer typescript-language-server svelte-language-server eslint-lsp html-lsp css-lsp json-lsp tailwindcss-language-server emmet-language-server prettier intelephense psalm lua-language-server ty
+:MasonInstall gopls rust-analyzer typescript-language-server svelte-language-server eslint-lsp html-lsp css-lsp json-lsp tailwindcss-language-server emmet-language-server prettier intelephense psalm lua-language-server
 ```
 
 Для отладки установи адаптеры:
@@ -221,18 +303,6 @@ Go, Rust/rustup с rustfmt, Node/npm, PHP/Composer, Lua/Busted, Python/uv
 :TSInstallConfigured
 ```
 
-Для JS/TS и Svelte вместо двух отдельных шагов достаточно выполнить:
-
-```vim
-:FrontendSetup
-```
-
-Команда ставит парсеры подсветки для JS/TS/TSX/Svelte и серверы
-`typescript-language-server`, `svelte-language-server` и Prettier. После её
-завершения закрой и снова открой фронтенд-файл (или перезапусти Neovim).
-Проверить подключение к открытому файлу можно через `Пробел cL`: должны быть
-видны `ts_ls` для JS/TS и `svelte` для `.svelte`.
-
 На текущей машине Psalm пока не установлен, остальные серверы уже установлены.
 На текущей машине tree-sitter-cli 0.27.0 установлен в `~/.local/bin`.
 Обновления запускаются вручную: `:Lazy` для плагинов, `:TSUpdate` для парсеров
@@ -242,6 +312,7 @@ Go, Rust/rustup с rustfmt, Node/npm, PHP/Composer, Lua/Busted, Python/uv
 
 Документация: [Neovim LSP](https://neovim.io/doc/user/lsp/),
 [ty](https://docs.astral.sh/ty/editors/),
+[Ruff](https://docs.astral.sh/ruff/editors/setup/),
 [vim-test](https://github.com/vim-test/vim-test),
 [fzf-lua](https://github.com/ibhagwan/fzf-lua),
 [blink.cmp](https://cmp.saghen.dev/configuration/completion),
@@ -249,7 +320,9 @@ Go, Rust/rustup с rustfmt, Node/npm, PHP/Composer, Lua/Busted, Python/uv
 [nvim-dap](https://github.com/mfussenegger/nvim-dap),
 [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter),
 [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim),
-[gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim).
+[gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim),
+[diffview.nvim](https://github.com/sindrets/diffview.nvim),
+[Lazygit](https://github.com/jesseduffield/lazygit).
 
 ## Проверка на текущей машине
 
@@ -264,7 +337,7 @@ Cargo-проекту.
 Для Go refactoring.nvim используется локальный запрос
 `queries/go/refactor_scope.scm`: текущий Go-парсер Treesitter хранит выражения
 прямо внутри `block`, а не в узле `statement_list`, который ожидает плагин.
-Также проверено, что gopls не пытается загрузить несуществующий `/home/darklord/syn`
+Также проверено, что gopls не пытается загрузить несуществующий `$HOME/syn`
 как workspace folder.
 Neovim 0.11.6, 21 сентября 2026: подсказки и переход к определению проверены
 на небольших проектах всех пяти языков. Проверены окно автодополнения с принятием

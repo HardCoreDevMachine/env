@@ -1,20 +1,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- nvim-treesitter main uses vim.list.unique (added in Neovim 0.12). Keep this
--- configuration usable with the installed 0.11.x release as well.
-vim.list = vim.list or {}
-vim.list.unique = vim.list.unique or function(items)
-  local seen, result = {}, {}
-  for _, item in ipairs(items) do
-    if not seen[item] then
-      seen[item] = true
-      result[#result + 1] = item
-    end
-  end
-  return result
-end
-
 local opt = vim.opt
 opt.number = true
 opt.relativenumber = true
@@ -36,10 +22,11 @@ opt.scrolloff = 5
 opt.updatetime = 300
 opt.timeoutlen = 1500
 opt.ttimeoutlen = 50
--- Match Solarized Dark in the terminal, with distinct syntax colors.
+-- Use Catppuccin Latte's light palette, including Neovim terminal buffers.
 opt.termguicolors = true
-opt.background = "dark"
-vim.cmd.colorscheme("solarized")
+opt.background = "light"
+require("config.lazy")
+vim.cmd.colorscheme("catppuccin-latte")
 opt.laststatus = 3
 opt.statusline = " %f %m%r%=%y  %l:%c  %p%% "
 
@@ -63,6 +50,19 @@ local map = vim.keymap.set
 local function open_explorer()
   vim.cmd("Lexplore! " .. vim.fn.fnameescape(require("config.project").root()))
 end
+
+local function open_lazygit()
+  if vim.fn.executable("lazygit") == 0 then
+    vim.notify("Lazygit is not installed", vim.log.levels.ERROR)
+    return
+  end
+
+  vim.cmd("tabnew")
+  vim.cmd("lcd " .. vim.fn.fnameescape(require("config.project").root()))
+  vim.cmd("terminal lazygit")
+  vim.cmd("startinsert")
+end
+
 local run = require("config.run")
 
 map("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
@@ -71,6 +71,7 @@ map("n", "<leader>e", open_explorer, { desc = "Explorer right" })
 map("n", "<leader>cL", function() require("config.info").lsp() end, { desc = "Show buffer LSP clients" })
 map("n", "<leader>cF", function() require("config.info").formatters() end, { desc = "Show buffer formatters" })
 map("n", "<leader>tt", "<cmd>botright 12split | terminal<cr>", { desc = "Terminal" })
+map("n", "<leader>gg", open_lazygit, { desc = "Open Lazygit" })
 map("n", "<leader>rr", run.command("cargo run"), { desc = "Rust cargo run" })
 map("n", "<leader>rc", run.command("cargo check"), { desc = "Rust cargo check" })
 map("n", "<leader>rb", run.command("cargo build"), { desc = "Rust cargo build" })
@@ -82,7 +83,6 @@ map("n", "<leader>Gb", run.command("go build ./..."), { desc = "Go build all pac
 map("n", "<leader>Gv", run.command("go vet ./..."), { desc = "Go vet all packages" })
 map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Leave terminal mode" })
 
-require("config.lazy")
 
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("UserTestMarks", { clear = true }),
