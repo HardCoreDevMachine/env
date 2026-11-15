@@ -4,7 +4,7 @@ This project uses **bd** (beads) for issue tracking. Run `bd prime` for full wor
 
 ## Канонический Beads
 
-- Все команды `bd` выполняйте с `--sandbox --db /home/darklord/project/project/env/.beads/embeddeddolt/slicefsm`: sandbox запрещает нежелательную автосинхронизацию и отправку данных.
+- Все команды `bd` выполняйте с `--sandbox --db .beads/embeddeddolt/slicefsm`: sandbox запрещает нежелательную автосинхронизацию и отправку данных.
 - Не используйте `.beads` из рабочей копии как отдельный реестр.
 - Рабочая спецификация адаптации SliceFSM-OMP: `docs/slicefsm-workflow-spec.md`.
 
