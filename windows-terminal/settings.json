@@ -1,218 +1,44 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "actions": 
-    [
-        {
-            "command": "duplicateTab",
-            "id": "User.DuplicateTabCwd",
-            "name": "New tab: same cwd"
-        },
-        {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "down"
-            },
-            "id": "User.FocusDown"
-        },
-        {
-            "command": 
-            {
-                "action": "newTab",
-                "profile": "{61cb344f-496b-542b-9236-92327cf547d8}"
-            },
-            "id": "User.NewUbuntuTab",
-            "name": "New tab: Ubuntu"
-        },
-        {
-            "command": 
-            {
-                "action": "scrollToMark",
-                "direction": "next"
-            },
-            "id": "User.NextMark"
-        },
-        {
-            "command": 
-            {
-                "action": "splitPane",
-                "split": "auto",
-                "splitMode": "duplicate"
-            },
-            "id": "User.SplitDuplicateAuto",
-            "name": "Split pane: duplicate"
-        },
-        {
-            "command": 
-            {
-                "action": "resizePane",
-                "direction": "up"
-            },
-            "id": "User.ResizeUp"
-        },
-        {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "left"
-            },
-            "id": "User.FocusLeft"
-        },
-        {
-            "command": "togglePaneZoom",
-            "id": "User.TogglePaneZoom",
-            "name": "Toggle pane zoom"
-        },
-        {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "up"
-            },
-            "id": "User.FocusUp"
-        },
-        {
-            "command": 
-            {
-                "action": "resizePane",
-                "direction": "left"
-            },
-            "id": "User.ResizeLeft"
-        },
-        {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "right"
-            },
-            "id": "User.FocusRight"
-        },
-        {
-            "command": 
-            {
-                "action": "scrollToMark",
-                "direction": "previous"
-            },
-            "id": "User.PrevMark"
-        },
-        {
-            "command": 
-            {
-                "action": "resizePane",
-                "direction": "down"
-            },
-            "id": "User.ResizeDown"
-        },
-        {
-            "command": 
-            {
-                "action": "resizePane",
-                "direction": "right"
-            },
-            "id": "User.ResizeRight"
-        }
-    ],
-    "alwaysShowNotificationIcon": true,
+    "actions": [],
     "copyFormatting": "none",
     "copyOnSelect": false,
-    "defaultProfile": "{61cb344f-496b-542b-9236-92327cf547d8}",
-    "firstWindowPreference": "persistedWindowLayout",
-    "keybindings": 
-    [
+    "defaultProfile": "{d8e96812-b789-5068-a5ae-10b2fb53e95f}",
+    "disabledProfileSources": [
+        "Windows.Terminal.Azure",
+        "Windows.Terminal.VisualStudio"
+    ],
+    "keybindings": [
         {
-            "id": "User.DuplicateTabCwd",
-            "keys": "ctrl+shift+t"
-        },
-        {
-            "id": "User.FocusLeft",
-            "keys": "alt+h"
-        },
-        {
-            "id": "User.NewUbuntuTab",
-            "keys": "ctrl+alt+t"
-        },
-        {
-            "id": "User.FocusRight",
-            "keys": "alt+l"
-        },
-        {
-            "id": "User.FocusUp",
-            "keys": "alt+k"
-        },
-        {
-            "id": "User.SplitDuplicateAuto",
-            "keys": "alt+shift+d"
-        },
-        {
-            "id": "User.TogglePaneZoom",
-            "keys": "alt+z"
-        },
-        {
-            "id": "User.FocusDown",
-            "keys": "alt+j"
-        },
-        {
-            "id": "User.ResizeLeft",
-            "keys": "alt+shift+h"
-        },
-        {
-            "id": "User.ResizeDown",
-            "keys": "alt+shift+j"
-        },
-        {
-            "id": "User.ResizeUp",
-            "keys": "alt+shift+k"
-        },
-        {
-            "id": "User.ResizeRight",
-            "keys": "alt+shift+l"
-        },
-        {
-            "id": "User.PrevMark",
-            "keys": "ctrl+up"
-        },
-        {
-            "id": "User.NextMark",
-            "keys": "ctrl+down"
-        },
-        {
-            "id": null,
+            "id": "Terminal.CopyToClipboard",
             "keys": "ctrl+c"
         },
         {
-            "id": null,
+            "id": "Terminal.PasteFromClipboard",
             "keys": "ctrl+v"
+        },
+        {
+            "id": "Terminal.DuplicatePaneAuto",
+            "keys": "alt+shift+d"
         }
     ],
-    "newTabMenu": 
-    [
+    "newTabMenu": [
         {
             "type": "remainingProfiles"
         }
     ],
-    "profiles": 
-    {
-        "defaults": 
-        {
-            "adjustIndistinguishableColors": "always",
-            "antialiasingMode": "grayscale",
-            "autoMarkPrompts": true,
-            "bellStyle": "none",
-            "colorScheme": "One Half Light",
-            "cursorShape": "filledBox",
-            "experimental.rightClickContextMenu": false,
-            "historySize": 32767,
-            "opacity": 100,
-            "padding": "8, 6, 8, 6",
-            "showMarksOnScrollbar": true,
-            "snapOnInput": true,
-            "useAcrylic": false
+    "profiles": {
+        "defaults": {
+            "colorScheme": "Catppuccin Latte"
         },
-        "list": 
-        [
+        "list": [
             {
+                "colorScheme": "Catppuccin Latte",
                 "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "font": {
+                    "face": "JetBrainsMono Nerd Font"
+                },
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "hidden": false,
                 "name": "Windows PowerShell"
@@ -224,86 +50,34 @@
                 "name": "Командная строка"
             },
             {
-                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-                "hidden": false,
-                "name": "Azure Cloud Shell",
-                "source": "Windows.Terminal.Azure"
-            },
-            {
-                "colorScheme": "Ubuntu",
-                "experimental.retroTerminalEffect": false,
-                "font": 
-                {
-                    "face": "0xProto Nerd Font Mono"
-                },
-                "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
-                "hidden": false,
-                "name": "Git Bash",
-                "source": "Git",
-                "useAcrylic": false
-            },
-            {
-                "commandline": "C:\\msys64\\ucrt64.exe",
-                "guid": "{3b24c691-5bc9-46af-a7eb-96d13ba7e0bb}",
-                "hidden": false,
-                "name": "MSYS2"
-            },
-            {
+                "backgroundImage": null,
                 "colorScheme": "Catppuccin Latte",
-                "font": 
-                {
-                    "face": "JetBrainsMono Nerd Font Mono"
+                "experimental.retroTerminalEffect": false,
+                "font": {
+                    "face": "JetBrainsMono Nerd Font"
                 },
-                "guid": "{61cb344f-496b-542b-9236-92327cf547d8}",
+                "guid": "{d8e96812-b789-5068-a5ae-10b2fb53e95f}",
                 "hidden": false,
-                "name": "Ubuntu",
-                "source": "Microsoft.WSL",
-                "suppressApplicationTitle": false,
-                "tabTitle": "Ubuntu"
+                "name": "Ubuntu 24.04.1 LTS",
+                "opacity": 100,
+                "source": "CanonicalGroupLimited.Ubuntu24.04LTS_79rhkp1fndgsc",
+                "useAcrylic": true
             },
             {
-                "guid": "{c9d2cfd8-67e0-507f-b846-c96a28541f3b}",
+                "guid": "{bb009644-b288-5ff6-8e36-e862c441e727}",
                 "hidden": false,
                 "name": "wsl-vpnkit",
                 "source": "Microsoft.WSL"
             },
             {
-                "font": 
-                {
-                    "face": "JetBrainsMono Nerd Font Mono"
-                },
-                "guid": "{acbafd15-cbbb-5bb3-8a61-bed446ff4b83}",
+                "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
                 "hidden": false,
-                "name": "Ubuntu 24.04 LTS",
-                "source": "CanonicalGroupLimited.Ubuntu24.04LTS_79rhkp1fndgsc"
+                "name": "Git Bash",
+                "source": "Git"
             }
         ]
     },
-    "schemes": 
-    [
-        {
-            "name": "Catppuccin Frappe",
-            "cursorColor": "#F2D5CF",
-            "selectionBackground": "#626880",
-            "background": "#303446",
-            "foreground": "#C6D0F5",
-            "black": "#51576D",
-            "red": "#E78284",
-            "green": "#A6D189",
-            "yellow": "#E5C890",
-            "blue": "#8CAAEE",
-            "purple": "#F4B8E4",
-            "cyan": "#81C8BE",
-            "white": "#B5BFE2",
-            "brightBlack": "#626880",
-            "brightRed": "#E78284",
-            "brightGreen": "#A6D189",
-            "brightYellow": "#E5C890",
-            "brightBlue": "#8CAAEE",
-            "brightPurple": "#F4B8E4",
-            "brightCyan": "#81C8BE",
-            "brightWhite": "#A5ADCE"
-        },
+    "schemes": [
         {
             "name": "Catppuccin Latte",
             "cursorColor": "#DC8A78",
@@ -328,24 +102,22 @@
             "brightWhite": "#BCC0CC"
         }
     ],
-    "themes": 
-    [
+    "showTabsFullscreen": true,
+    "theme": "Tokyo Night Day Light",
+    "themes": [
         {
             "name": "Tokyo Night Day Light",
-            "tab": 
-            {
+            "tab": {
                 "background": "terminalBackground",
                 "iconStyle": "default",
                 "showCloseButton": "hover",
                 "unfocusedBackground": "#C4C8DAFF"
             },
-            "tabRow": 
-            {
+            "tabRow": {
                 "background": "#D6D9E6FF",
                 "unfocusedBackground": "#D6D9E6FF"
             },
-            "window": 
-            {
+            "window": {
                 "applicationTheme": "light",
                 "experimental.rainbowFrame": false,
                 "frame": null,
@@ -354,5 +126,5 @@
             }
         }
     ],
-    "windowingBehavior": "useAnyExisting"
+    "useAcrylicInTabRow": true
 }
