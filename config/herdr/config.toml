@@ -5,6 +5,7 @@ show_agent_labels_on_pane_borders = true
 status_indicators = "symbols"
 
 agent_panel_sort = "spaces"
+host_cursor = "native"
 [ui.toast]
 delivery = "herdr"
 
