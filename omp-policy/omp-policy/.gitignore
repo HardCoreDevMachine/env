@@ -1,6 +1,8 @@
 # OMP runtime state is never stored here.
 *.db
 *.db-*
+.beads
+.env
 cache/
 sessions/
 blobs/
