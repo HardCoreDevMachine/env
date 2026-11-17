@@ -13,7 +13,8 @@ function M.root()
   end
   return vim.fs.root(name, {
     "go.mod", "go.work", "package.json", "composer.json", "Cargo.toml",
-    "pyproject.toml", "pytest.ini", "setup.cfg", "setup.py", "requirements.txt",
+    "pom.xml", "mvnw", "build.gradle", "build.gradle.kts", "gradlew",
+    "settings.gradle", "settings.gradle.kts", "pyproject.toml", "pytest.ini", "setup.cfg", "setup.py", "requirements.txt",
     ".busted", ".luarc.json", ".luarc.jsonc", ".git",
   }) or vim.fs.dirname(name)
 end

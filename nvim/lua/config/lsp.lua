@@ -310,6 +310,7 @@ vim.lsp.config("ruff", {
   root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", "uv.lock", ".git" },
 })
 
+-- Java is started by nvim-jdtls so each project gets its own workspace.
 -- Only these servers can start, and only for matching file types.
 vim.lsp.enable({
   "gopls",

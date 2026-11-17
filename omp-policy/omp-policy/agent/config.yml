@@ -10,7 +10,7 @@ modelRoles:
   implementer: "@default"
   review: "@slow"
   security: "@slow"
-  default: kimi-coding/k3.1-pro:high
+  default: codex-lb/gpt-5.6-terra
 enabledModels:
   - openai/gpt-5.6-terra
   - openai/gpt-5.6-luna

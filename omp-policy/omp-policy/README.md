@@ -7,14 +7,19 @@ Global Oh My Pi policy, independent of an individual project.
 - `agent/config.yml`: model roles, task policy, memory policy, UI defaults, and disabled bundled skills.
 - `agent/RULES.md`: global engineering decision gates.
 - `agent/agents/`: global custom agent profiles.
-- `agent/models.yml`: provider discovery configuration.
 - `skills/`: custom reusable agent skills.
 
-The repository does not contain session history, databases, caches, blobs, themes, plugins, or project-local instructions.
+The repository does not contain session history, databases, caches, blobs, themes, plugins, project-local instructions, or private provider credentials.
 
-## Local provider configuration
+## Local OMP configuration
 
-`agent/mcp.json` contains deployment-specific provider endpoints and enabled-server names. It is intentionally ignored. Copy `agent/mcp.json.example` to `agent/mcp.json`, fill it locally, and then run the Stow commands below.
+Keep private OMP configuration beside the tracked Stow files:
+
+- `agent/models.yml`: custom provider endpoints, API-key references, and model definitions. OMP loads this file automatically.
+- `agent/mcp.json`: deployment-specific MCP server endpoints and enabled-server names.
+- `agent/private.yml`: optional local `config.yml` overlay, passed with `omp --config "$HOME/.omp/agent/private.yml"`.
+
+All three files are intentionally ignored. They are symlinked to `~/.omp/agent/` by the Stow command below, but never enter Git. `agent/models.yml.example` is the safe starting template.
 
 ## Install
 

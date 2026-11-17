@@ -1,6 +1,6 @@
 # Neovim
 
-Минимальный конфиг для Neovim 0.12.5+: Go, Rust, JavaScript/TypeScript,
+Минимальный конфиг для Neovim 0.12.5+: Go, Rust, Java, JavaScript/TypeScript,
 Svelte/Vite, PHP, Lua и Python.
 Рабочий `~/.config/nvim` ссылается на эту папку. Catppuccin Latte — светлая
 тема Neovim; плагин задаёт и цвета встроенных терминалов через `termguicolors`.
@@ -13,6 +13,7 @@ Svelte/Vite, PHP, Lua и Python.
 | Язык | Сервер | Тесты |
 | --- | --- | --- |
 | Go | gopls | go test |
+| Java | jdtls | JUnit через java-test или Maven/Gradle |
 | Rust | rust-analyzer | cargo test |
 | JS/TS, JSX/TSX | typescript-language-server; ESLint при наличии конфига | Vitest, Jest, node:test и другие |
 | Svelte/Vite | svelte-language-server; HTML/CSS/JSON/Tailwind/Emmet по файлам | Vitest, Playwright и другие |
@@ -20,8 +21,35 @@ Svelte/Vite, PHP, Lua и Python.
 | Lua | lua-language-server | Busted |
 | Python | ty и Ruff | pytest; для проекта с uv.lock — uv run pytest |
 
-## Каждый день
+## Java
 
+Java запускается через `nvim-jdtls`, а не через общий LSP-старт. Корень проекта
+ищется по `pom.xml`/`mvnw`, `build.gradle*`/`gradlew` или `.git`; для каждого
+проекта JDTLS получает отдельный workspace в кэше Neovim.
+
+Для запуска language server нужен современный JDK: актуальный JDTLS требует
+JDK 25. Версия Java проекта может оставаться 8 или выше; это настраивается в
+Maven/Gradle. Если активен Java 8, сначала выбери JDK 25 через SDKMAN или
+укажи его в `JAVA_HOME`.
+
+Основные команды Java:
+
+| Команда | Действие |
+| --- | --- |
+| `Пробел jo` | Организовать imports |
+| `:JdtCompile` | Запустить компиляцию через JDTLS |
+| `:JdtRestart` | Перезапустить language server |
+| `:JdtJshell` | Открыть JShell с classpath проекта |
+| `:JdtBytecode` | Показать bytecode текущего класса |
+| `:JdtUpdateConfig` | Перечитать конфигурацию проекта |
+| `Пробел jf` | Запустить тестовый класс, если установлен `java-test` |
+| `Пробел jn` | Запустить тестовый метод под курсором, если установлен `java-test` |
+
+Для Maven/Gradle debug и тестов дополнительно установи `java-debug-adapter` и
+`java-test`. Не открывай отдельные `.java` файлы вне проекта, если нужны
+classpath, зависимости и тестовые команды: открой файл из Maven/Gradle проекта.
+
+## Каждый день
 `Пробел` — начало сочетания, клавиши нажимаются последовательно в обычном режиме.
 Между клавишами можно делать паузу до 1,5 секунды.
 
@@ -155,9 +183,42 @@ Neovim, если она осталась пустой.
 
 ## SQLite и другие базы
 
-Нажми `Пробел db` или выполни `:DBUI`. В панели нажми `A` и укажи URL,
-например `sqlite:./data/app.db`. Запрос открывается из панели, а запись
-файла (`:w`) выполняет его. Для SQLite нужен `sqlite3` в `PATH`.
+### Подключение
+
+Открой панель через `Пробел db` или `:DBUI`. В панели нажми `A`, введи URL и
+имя соединения. Примеры:
+
+```text
+sqlite:./data/app.db
+postgresql://user@localhost:5432/app
+mysql://user@localhost/app
+```
+
+Для SQLite нужен `sqlite3` в `PATH`; для PostgreSQL и MySQL — соответствующие
+клиенты (`psql`, `mysql`). Пароль не записывай в Git. Для локального соединения
+используй переменную `DBUI_URL`, а постоянные project-local настройки держи в
+игнорируемом `.env` или в локальном конфиге.
+
+### Панель и запросы
+
+| Клавиша | Действие |
+| --- | --- |
+| `o` / `Enter` | Открыть или переключить объект |
+| `S` | Открыть объект в vertical split |
+| `A` | Добавить соединение |
+| `d` | Удалить buffer или сохранённый запрос |
+| `R` | Обновить список |
+| `H` | Показать детали соединения |
+
+На таблице `o` открывает запрос-выборку; в SQL-buffer измени запрос и нажми
+`:w` — vim-dadbod выполнит его. Для результата используй обычные движения
+Neovim; `:q` закрывает buffer. `Пробел db` повторно открывает или закрывает
+панель. SQL completion даёт `vim-dadbod-completion`.
+
+Сохранить запрос для повторного использования: в SQL-buffer нажми `<leader>W`.
+Bind-параметры редактируются через `<leader>E`. Перед `UPDATE`, `DELETE`, DDL и
+запросами к production проверь текущий connection в панели; UI не добавляет
+дополнительного подтверждения опасных SQL-команд.
 
 Rust/Go команды сохраняют текущий файл и открывают нижний терминал в корне
 проекта. `Пробел Gp` запускает `go test` только для пакета текущего файла,
@@ -233,11 +294,16 @@ PHP использует `php-debug-adapter` и слушает Xdebug на по�
 PHP обычно достаточно включить Xdebug в PHP. Для Docker есть отдельная
 конфигурация с маппингом `/app` на корень проекта.
 
+Java получает debug/test-интеграцию через bundles `java-debug-adapter` и
+`java-test`, которые JDTLS подхватывает из Mason автоматически. Без них LSP,
+компиляция, навигация и рефакторинг работают, но `Пробел jf`/`Пробел jn` не
+запустят JUnit.
+
 ## Что оставлено
 
-Всего 24 плагина с менеджером: Catppuccin, lazy.nvim, fzf-lua, flash.nvim,
+Всего 25 плагинов с менеджером: Catppuccin, lazy.nvim, fzf-lua, flash.nvim,
 nvim-autopairs, refactoring.nvim, async.nvim, blink.cmp, mason.nvim,
-nvim-lspconfig, conform.nvim, nvim-treesitter, nvim-treesitter-textobjects,
+nvim-lspconfig, nvim-jdtls, conform.nvim, nvim-treesitter, nvim-treesitter-textobjects,
 gitsigns.nvim, nvim-dap, nvim-dap-ui, nvim-nio, vim-test, vim-dadbod,
 vim-dadbod-ui, vim-dadbod-completion, diffview.nvim, ruscmd.nvim и omp.nvim.
 При пустом запуске загружаются Catppuccin, lazy.nvim и nvim-treesitter.
@@ -280,18 +346,24 @@ Lua видит API Neovim только внутри конфига Neovim; об�
 
 Нужны Neovim 0.12.5+, Git, fzf > 0.36, ripgrep (`rg`), tar, curl,
 tree-sitter-cli 0.26.1+ и C compiler, а также инструменты нужных языков:
-Go, Rust/rustup с rustfmt, Node/npm, PHP/Composer, Lua/Busted, Python/uv
-или venv.
+Go, Rust/rustup с rustfmt, JDK 25, Maven или Gradle, Node/npm, PHP/Composer,
+Lua/Busted, Python/uv или venv.
 Положи эту папку в `~/.config/nvim` либо сделай ссылку. При первом запуске lazy.nvim
 скачает плагины; версии зафиксированы в lazy-lock.json.
 
 Один раз установи серверы стандартной командой Mason:
 
 ```vim
-:MasonInstall gopls rust-analyzer typescript-language-server svelte-language-server eslint-lsp html-lsp css-lsp json-lsp tailwindcss-language-server emmet-language-server prettier intelephense psalm lua-language-server
+:MasonInstall gopls rust-analyzer jdtls typescript-language-server svelte-language-server eslint-lsp html-lsp css-lsp json-lsp tailwindcss-language-server emmet-language-server prettier intelephense psalm lua-language-server
 ```
 
-Для отладки установи адаптеры:
+Для Java debug/test дополнительно установи:
+
+```vim
+:MasonInstall java-debug-adapter java-test
+```
+
+Для отладки остальных языков установи адаптеры:
 
 ```vim
 :MasonInstall delve js-debug-adapter php-debug-adapter
