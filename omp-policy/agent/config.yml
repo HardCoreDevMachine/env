@@ -75,3 +75,5 @@ skills:
     - orca-per-workspace-env
     - orca-plugin-authoring
     - orchestration
+compaction:
+  experimentalContextManagement: true
