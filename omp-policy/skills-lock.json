@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "skills": {
+    "adhd": {
+      "source": "UditAkhourii/adhd",
+      "commit": "7487ffe382567b6250dad8cfad490eb08f70a124",
+      "sourceType": "github",
+      "skillPath": "skills/adhd/SKILL.md",
+      "computedHash": "6a7b680100ab5a237e2de42c160a2604e2396b493452b177728f5868468dd140",
+      "installMode": "copy"
+    },
+    "asd-ste100": {
+      "source": "danyuchn/asd-ste100-skill",
+      "commit": "65c8ab6ef5fcb3619c8e6daca43e68627f3d7b4a",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "ad738b544dee6ee62f87440839ff2ec33879c5335c702a7ea0f47a48700c269c",
+      "installMode": "copy"
+    },
+    "design-taste-frontend": {
+      "source": "Leonxlnx/taste-skill",
+      "commit": "f6b76575f949707b4e3c37cd86cb44b0b98643e8",
+      "sourceType": "github",
+      "skillPath": "skills/taste-skill/SKILL.md",
+      "computedHash": "b10eab0a9684cd09cf34c31ef04a3bf530a5f4404422f9c520d42372d670c7fc",
+      "installMode": "copy"
+    },
+    "domain-modeling": {
+      "source": "mattpocock/skills",
+      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/domain-modeling/SKILL.md",
+      "computedHash": "b78689833404148c769077355e12dbe5ad996a158a1e21e58ddf169e439d9d8c",
+      "installMode": "copy"
+    },
+    "i-have-adhd": {
+      "source": "ayghri/i-have-adhd",
+      "commit": "1ecea1993b7fce257ffbd686c070948b5e07eda6",
+      "sourceType": "github",
+      "skillPath": "skills/i-have-adhd/SKILL.md",
+      "computedHash": "894c54f32643b3ff9f626bbb758f12a704c354dbf8ce6b4939f7971a16827ae1",
+      "installMode": "copy"
+    },
+    "ponytail": {
+      "source": "DietrichGebert/ponytail",
+      "commit": "96608e078b2d5ea607c5c3b8b5a54d1c1fba6846",
+      "sourceType": "github",
+      "skillPath": "skills/ponytail/SKILL.md",
+      "computedHash": "56d72677aca02689ac89bd48734e8c19b40ab86716d1257eaf5f1238b43cda6b",
+      "installMode": "copy"
+    },
+    "security-audit": {
+      "source": "cloudflare/security-audit-skill",
+      "commit": "c1c8a8c1471069fb0e188eeaff69b8e8db6564a8",
+      "sourceType": "github",
+      "skillPath": "skills/security-audit/SKILL.md",
+      "computedHash": "8513eb3b2c39b8d05ef4f47b32ef4d18280b93a5efb91d8df6272f7435034af5",
+      "installMode": "copy"
+    }
+  }
+}
