@@ -12,3 +12,6 @@ terminal-sessions/
 agent/mcp.json
 agent/models.yml
 agent/private.yml
+
+# Lock file created while local configuration is edited.
+agent/config.yml.lock
