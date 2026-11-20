@@ -42,6 +42,23 @@ local function jdtls_command()
   if vim.fn.executable(mason_command) == 1 then return mason_command end
 end
 
+local function java_home()
+  local candidates = { vim.env.JAVA_HOME }
+  vim.list_extend(candidates, glob("/usr/lib/jvm/*"))
+  local best, best_major = nil, -1
+  for _, dir in ipairs(candidates) do
+    local java = dir and (dir .. "/bin/java")
+    if java and vim.fn.executable(java) == 1 then
+      local version = vim.fn.system({ java, "-version" })
+      local major = tonumber(version:match('version "1%.8')) and 8
+        or tonumber(version:match('version "(%d+)'))
+        or 0
+      if major > best_major then best, best_major = dir, major end
+    end
+  end
+  if best_major >= 21 then return best end
+end
+
 local function start(bufnr)
   if vim.bo[bufnr].filetype ~= "java" or vim.b[bufnr].jdtls_started then return end
 
@@ -61,6 +78,7 @@ local function start(bufnr)
   local config = {
     name = "jdtls",
     cmd = { command, "-data", workspace(root) },
+    cmd_env = { JAVA_HOME = java_home() },
     root_dir = root,
     settings = {
       java = {
