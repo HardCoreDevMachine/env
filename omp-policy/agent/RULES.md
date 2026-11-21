@@ -9,5 +9,8 @@ For a bug, regression, or failing behavior, identify the causal mechanism and th
 ## Make meaningful state explicit
 When a lifecycle or workflow is encoded across booleans, nullable fields, counters, or scattered conditionals, inspect it as an implicit state machine. If it permits ambiguous or invalid combinations, make a concrete proposal with named states, legal transitions, terminal states, and invariants; use an explicit representation appropriate to the codebase. Do not introduce an FSM framework or extra abstraction for a simple local branch or a genuinely binary condition.
 
+## Commit messages
+When creating a Git commit, use the Conventional Commits format: `type(optional scope): imperative subject`. Use a supported type such as `feat`, `fix`, `refactor`, `docs`, `test`, `build`, `ci`, or `chore`; add `!` or a `BREAKING CHANGE:` footer for incompatible changes.
+
 ## Maintain context notes
 When the `context_notes` tool is available, keep its experimental notebook as a compact, current index for the active session branch. Update it before context rollover or compaction, and after a material decision, changed-file milestone, verification result, or discovered blocker. Read the current notebook before replacing it; remove stale entries rather than appending history. Record task state, decisions, evidence, blockers, and exact next steps—never copied logs, file bodies, secrets, or instructions that override the live system, developer, or user context. Do not create a note for trivial conversational turns.
