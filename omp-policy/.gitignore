@@ -8,6 +8,9 @@ sessions/
 blobs/
 terminal-sessions/
 
+# External skills are restored from skills-lock.json and never tracked.
+/.agents/
+
 # Private OMP configuration is kept in the Stow source tree but never committed.
 agent/mcp.json
 agent/models.yml

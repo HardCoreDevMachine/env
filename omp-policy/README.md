@@ -7,7 +7,9 @@ Global Oh My Pi policy, independent of an individual project.
 - `agent/config.yml`: model roles, task policy, memory policy, UI defaults, and disabled bundled skills.
 - `agent/RULES.md`: global engineering decision gates.
 - `agent/agents/`: global custom agent profiles.
-- `skills/`: custom reusable agent skills.
+- `skills/`: custom reusable agent skills, tracked in Git.
+
+- `.agents/skills/`: external skills restored from `skills-lock.json`; intentionally untracked.
 
 The repository does not contain session history, databases, caches, blobs, themes, plugins, project-local instructions, or private provider credentials.
 
@@ -23,13 +25,18 @@ All three files are intentionally ignored. They are symlinked to `~/.omp/agent/`
 
 ## Install
 
-Run from this repository root:
+Run from the `omp-policy` directory:
 
 ```sh
+cd omp-policy
 mkdir -p "$HOME/.agents/skills"
+npx --yes skills@1.9.0 experimental_install --agent pi --frozen-lockfile
 stow --dir "$PWD" --target "$HOME/.omp/agent" agent
 stow --dir "$PWD" --target "$HOME/.agents/skills" skills
+stow --dir "$PWD/.agents" --target "$HOME/.agents/skills" skills
 ```
+
+The restore command fetches the exact commits and verifies the hashes pinned in `skills-lock.json`; it does not modify the lockfile. The first Stow command installs tracked local skills, and the second installs generated external skills. Update an external skill only with `npx --yes skills@1.9.0 update -p -y`, then review and commit the resulting `skills-lock.json` change.
 
 On first migration, back up conflicting regular files in `~/.omp/agent/` before invoking Stow. Runtime-owned files and other extensions remain untouched.
 
