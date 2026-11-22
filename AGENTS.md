@@ -1,11 +1,15 @@
 # Agent Instructions
 
-This project uses **bd** (beads) for issue tracking. Run `bd prime` for full workflow context.
+This project uses **bd** (beads) for issue tracking. Run `bd --sandbox prime` for full workflow context.
 
 ## Канонический Beads
 
-- Все команды `bd` выполняйте с `--sandbox --db .beads/embeddeddolt/slicefsm`: sandbox запрещает нежелательную автосинхронизацию и отправку данных.
-- Не используйте `.beads` из рабочей копии как отдельный реестр.
+- Все команды `bd` выполняйте с `--sandbox`: sandbox запрещает нежелательную автосинхронизацию и отправку данных.
+- Не передавайте `--db`: подключение определяется версионируемым `.beads/config.yaml`.
+- Все worktree используют общий `dolt sql-server` (`127.0.0.1:3308`, база `slicefsm`). Локальные данные и runtime-файлы находятся в `~/.beads/shared-server/` и `.beads/`, но не версионируются.
+- Новые worktree создавайте через `bd --sandbox worktree create <path>`: Beads создаст redirect к общей конфигурации основного worktree.
+- На новой машине установите совместимые `bd` и `dolt`, затем выполните `bd --sandbox bootstrap --yes`. Общий сервер запускается автоматически; параметры подключения и общий `project_id` уже находятся в версионируемых файлах `.beads/`.
+- Версионируются `.beads/config.yaml` и `.beads/metadata.json`. Пароли задаются через `BEADS_DOLT_PASSWORD` или `~/.config/beads/credentials` и не добавляются в репозиторий.
 - Рабочая спецификация адаптации SliceFSM-OMP: `docs/slicefsm-workflow-spec.md`.
 
 ## Quick Reference

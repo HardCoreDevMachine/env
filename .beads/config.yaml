@@ -1,0 +1,10 @@
+issue-prefix: slicefsm
+
+dolt:
+  mode: server
+  shared-server: true
+  auto-commit: off
+  database: slicefsm
+  host: 127.0.0.1
+  port: 3308
+  user: root
